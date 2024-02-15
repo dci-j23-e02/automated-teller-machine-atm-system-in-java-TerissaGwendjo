@@ -175,7 +175,10 @@ public class ATM {
     private static void displayTransactionHistory() {
         // Retrieve and display transaction history
         List<Transaction> transactionHistory = TransactionHistoryManager.getTransactionHistory();
-        if (transactionHistory.isEmpty()) {
+
+        if (transactionHistory == null) {
+            System.out.println("Error: Transaction history is null."); }
+         else if (transactionHistory.isEmpty()) {
             System.out.println("Transaction history is empty.");
         } else {
             System.out.println("Transaction History:");
