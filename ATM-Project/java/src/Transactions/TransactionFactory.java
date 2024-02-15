@@ -1,20 +1,27 @@
 package Transactions;
 import User.*;
 
-public class TransactionFactory {
+public abstract class TransactionFactory {
     // Method to create different Transaction objects based on the transaction type
-    public Transaction createTransaction(String transactionType, double amount, String senderAccountNumber, String recipientAccountNumber) {
+    public static Transaction createTransaction(String transactionType, String senderUsername, double amount) {
         // Check the transaction type and return the corresponding Transaction object
         switch (transactionType) {
-            case "deposit":
-                return new DepositTransaction(amount, recipientAccountNumber);
-            case "withdrawal":
-                return new WithdrawalTransaction(amount, senderAccountNumber);
-            case "transfer":
-                return new TransferTransaction(amount, senderAccountNumber, recipientAccountNumber);
+            case "DEPOSIT":
+                return new DepositTransaction(amount, senderUsername);
+            case "WITHDRAWAL":
+                return new WithdrawalTransaction(amount, senderUsername);
             default:
                 // Handle unknown transaction types or invalid inputs
                 throw new IllegalArgumentException("Invalid transaction type: " + transactionType);
         }
     }
+
+    public static Transaction createTransferTransaction(String TransactionType, String senderUsername, String receiverUsername, double amount) {
+        return new TransferTransaction(amount, senderUsername, receiverUsername);
+    }
+    public static Transaction createChangePinTransaction(String TransactionType, String username, String newPin) {
+        return new ChangePinTransaction(username, newPin);
+    }
+
+
 }

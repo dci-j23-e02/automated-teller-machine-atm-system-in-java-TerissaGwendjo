@@ -1,32 +1,41 @@
 package Transactions;
 
-import java.time.LocalDateTime;
+import FileManager.*;
+
+import java.io.IOException;
+import java.util.List;
 
 public class WithdrawalTransaction implements Transaction {
+
     private double amount;
     private String username;
-    private LocalDateTime timestamp;
 
     public WithdrawalTransaction(double amount, String username) {
-        this.amount = amount;
         this.username = username;
-        this.timestamp = LocalDateTime.now(); // Record the current timestamp
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+        this.amount = amount;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IOException {
+        // Logic to withdraw money from the account
+        FileManager fileManager = FileManager.getInstance();
+        List<String> userRecords = fileManager.readUserRecords();
 
+        for (int i = 0; i < userRecords.size(); i++) {
+            String[] parts = userRecords.get(i).split(",");
+            if (parts[0].equals(username)) {
+                double currentBalance = Double.parseDouble(parts[2]);
+                if (currentBalance >= amount) {
+                    currentBalance -= amount;
+                    parts[2] = String.valueOf(currentBalance);
+                    userRecords.set(i, String.join(",", parts));
+                    FileManager.writeUserRecords(userRecords);
+                    System.out.println("Withdrawal successful.");
+                } else {
+                    System.out.println("Insufficient balance.");
+                }
+                break;
+            }
+        }
     }
 }

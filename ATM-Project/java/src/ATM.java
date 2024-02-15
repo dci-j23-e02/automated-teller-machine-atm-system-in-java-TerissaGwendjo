@@ -1,82 +1,105 @@
 import User.*;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
+import Transactions.*;
+import FileManager.*;
 
 
 public class ATM {
 
-    private UserManager userManager;
-    private Scanner scanner;
-
-    public ATM() {
-        userManager = new UserManager();
-        scanner = new Scanner(System.in);
-    }
-
-    // Main method to drive the ATM system
-    public void run() {
-        boolean isAuthenticated = false;
-        String username = "";
-        System.out.println("Welcome to the ATM System");
-
-        // User authentication
-        while (!isAuthenticated) {
-            System.out.print("Enter your username: ");
-            String inputUsername = scanner.nextLine();
-            System.out.print("Enter your password: ");
-            String password = scanner.nextLine();
-            isAuthenticated = userManager.authenticateUser(inputUsername, password);
-            if (isAuthenticated) {
-                username = inputUsername;
-                System.out.println("Authentication successful!");
-            } else {
-                System.out.println("Invalid username or password. Please try again.");
-            }
-        }
-
-        // Display balance
-        System.out.println("Your balance: $" + userManager.getBalance(username));
-
-        // Deposit funds
-        System.out.print("Enter amount to deposit: ");
-        double depositAmount = Double.parseDouble(scanner.nextLine());
-        userManager.deposit(username, depositAmount);
-        System.out.println("Deposit successful!");
-
-        // Withdraw funds
-        System.out.print("Enter amount to withdraw: ");
-        double withdrawAmount = Double.parseDouble(scanner.nextLine());
-        boolean isWithdrawn = userManager.withdraw(username, withdrawAmount);
-        if (isWithdrawn) {
-            System.out.println("Withdrawal successful!");
-        } else {
-            System.out.println("Insufficient funds for withdrawal.");
-        }
-
-        // Transfer funds
-        System.out.print("Enter recipient's username: ");
-        String recipient = scanner.nextLine();
-        System.out.print("Enter amount to transfer: ");
-        double transferAmount = Double.parseDouble(scanner.nextLine());
-        boolean isTransferred = userManager.transfer(username, recipient, transferAmount);
-        if (isTransferred) {
-            System.out.println("Transfer successful!");
-        } else {
-            System.out.println("Transfer failed.");
-        }
-
-        // Change password
-        System.out.print("Enter new password: ");
-        String newPassword = scanner.nextLine();
-        userManager.changePassword(username, newPassword);
-        System.out.println("Password changed successfully!");
-
-        scanner.close();
-    }
+    // Initialize scanner object to read user input and its reference cannot be changed once it is initialized.
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        ATM atmSystem = new ATM();
-        atmSystem.run();
+        try {
+            FileManager fileManager = FileManager.getInstance();
+            List<String> userRecords = fileManager.readUserRecords();
+
+            // ATM operations
+            System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+
+            // Authentication
+            boolean isAuthenticated = authenticateUser(username, userRecords);
+            if (!isAuthenticated) {
+                System.out.println("Authentication failed. Exiting...");
+                return;
+            }
+
+            displayBalance(username, userRecords);
+
+            // Display menu
+            System.out.println("Menu:");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Transfer");
+            System.out.println("4. Change PIN");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmount = scanner.nextDouble();
+                    Transaction depositTransaction = TransactionFactory.createTransaction("DEPOSIT", username, depositAmount);
+                    depositTransaction.execute();
+                    break;
+                case 2:
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    Transaction withdrawTransaction = TransactionFactory.createTransaction("WITHDRAW", username, withdrawAmount);
+                    withdrawTransaction.execute();
+                    break;
+                case 3:
+                    System.out.print("Enter receiver's username: ");
+                    String receiverUsername = scanner.next();
+                    System.out.print("Enter amount to transfer: ");
+                    double transferAmount = scanner.nextDouble();
+                    Transaction transferTransaction = TransactionFactory.createTransferTransaction("TRANSFER",username,receiverUsername,transferAmount);
+                    transferTransaction.execute();
+                    break;
+                case 4:
+                    System.out.print("Enter new PIN: ");
+                    String newPin = scanner.next();
+                    Transaction changePinTransaction = new ChangePinTransaction(username, newPin);
+                    changePinTransaction.execute();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error reading/writing user records file: " + e.getMessage());
+        }
+    }
+
+    private static boolean authenticateUser(String username, List<String> userRecords) {
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        for (String record : userRecords) {
+            String[] parts = record.split(",");
+            if (parts[0].equals(username) && parts[1].equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void displayBalance(String username, List<String> userRecords) {
+        for (String record : userRecords) {
+            String[] parts = record.split(",");
+            if (parts[0].equals(username)) {
+                System.out.println("Your current balance is: " + parts[2]);
+                break;
+            }
+        }
     }
 
 }

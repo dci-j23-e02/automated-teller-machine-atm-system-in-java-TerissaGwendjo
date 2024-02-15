@@ -1,38 +1,60 @@
 package Transactions;
 
-import java.time.LocalDateTime;
+import FileManager.*;
+
+import java.io.IOException;
+import java.util.List;
 
 public class TransferTransaction implements Transaction {
     private double amount;
-    private String username;
-    private String recipient;
-    private LocalDateTime timestamp;
+    private String senderUsername;
+    private String receiverUsername;
 
-    public TransferTransaction(double amount, String username, String recipient) {
+    public TransferTransaction( double amount, String senderUsername, String receiverUsername) {
         this.amount = amount;
-        this.username = username;
-        this.recipient = recipient;
-        this.timestamp = LocalDateTime.now(); // Record the current timestamp
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+        this.senderUsername = senderUsername;
+        this.receiverUsername = receiverUsername;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IOException {
+        // Logic to transfer money from sender to receiver
+        FileManager fileManager = FileManager.getInstance();
+        List<String> userRecords = fileManager.readUserRecords();
 
+        double senderBalance = 0;
+        double receiverBalance = 0;
+
+        // Update sender's balance
+        for (int i = 0; i < userRecords.size(); i++) {
+            String[] parts = userRecords.get(i).split(",");
+            if (parts[0].equals(senderUsername)) {
+                senderBalance = Double.parseDouble(parts[2]);
+                if (senderBalance >= amount) {
+                    senderBalance -= amount;
+                    parts[2] = String.valueOf(senderBalance);
+                    userRecords.set(i, String.join(",", parts));
+                } else {
+                    System.out.println("Insufficient balance for transfer.");
+                    return;
+                }
+                break;
+            }
+        }
+
+        // Update receiver's balance
+        for (int i = 0; i < userRecords.size(); i++) {
+            String[] parts = userRecords.get(i).split(",");
+            if (parts[0].equals(receiverUsername)) {
+                receiverBalance = Double.parseDouble(parts[2]);
+                receiverBalance += amount;
+                parts[2] = String.valueOf(receiverBalance);
+                userRecords.set(i, String.join(",", parts));
+                break;
+            }
+        }
+
+        FileManager.writeUserRecords(userRecords);
+        System.out.println("Transfer successful.");
     }
 }
