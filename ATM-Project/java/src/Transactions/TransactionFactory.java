@@ -1,7 +1,7 @@
 package Transactions;
-import User.*;
 
 public abstract class TransactionFactory {
+    public abstract String getUsername();
     // Method to create different Transaction objects based on the transaction type
     public static Transaction createTransaction(String transactionType, String senderUsername, double amount) {
         // Check the transaction type and return the corresponding Transaction object

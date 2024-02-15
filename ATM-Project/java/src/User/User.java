@@ -9,10 +9,6 @@ public class User {
     private String username;
     private String password;
     private double balance;
-    private String currency;
-    public String getCurrency() {
-        return currency;
-    }
 
     private List<Transaction> transactionHistory; // stores all transactions associated with the user
 
@@ -21,7 +17,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.balance = balance;
-        this.transactionHistory = new ArrayList<>();
     }
 
     // Getters and Setters
