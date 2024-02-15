@@ -6,6 +6,8 @@ import FileManager.*;
 import Transactions.AdvancedFeatures.*;
 import Transactions.AdvancedFeatures.SecurityManager;
 
+import static Transactions.AdvancedFeatures.CurrencyConverter.readAccountBalanceFromFile;
+
 
 public class ATM {
 
@@ -48,8 +50,6 @@ public class ATM {
             System.out.println("9. User Profile Management");
             System.out.println("10. Display Security Enhancements");
             System.out.println("11. EXIT");
-
-
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
 
@@ -207,12 +207,25 @@ public class ATM {
     }
 
     // Method to display Multi-Currency Support
+
     private static void displayMultiCurrencySupport() {
+        // Read account balance from file or any other data source
+        double accountBalance = readAccountBalanceFromFile(); // Implement this method to read the balance from the file
+
+        // Convert currency and display the result
+        CurrencyConverter currencyConverter = new CurrencyConverter();
+        double convertedAmount = currencyConverter.convertCurrency(accountBalance, "USD", "EUR");
+        System.out.println("Converted amount: " + convertedAmount);
+    }
+
+
+
+    /*private static void displayMultiCurrencySupport() {
         // Convert currency and display the result
         CurrencyConverter currencyConverter = new CurrencyConverter();
         double convertedAmount = currencyConverter.convertCurrency(100.0, "USD", "EUR");
         System.out.println("Converted amount: " + convertedAmount);
-    }
+    }*/
 
     // Method to display User Profile Management
     private static void displayUserProfileManagement() {
