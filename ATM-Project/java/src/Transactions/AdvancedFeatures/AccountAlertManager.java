@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class AccountAlertManager {
         private Map<String, Double> accountBalances;
-    private Map<String, List<Double>> transactionHistory;
+    private static Map<String, List<Double>> transactionHistory;
 
         public AccountAlertManager() {
             this.accountBalances = new HashMap<>();
@@ -30,7 +30,7 @@ public class AccountAlertManager {
     }
 
     // Check unusual activity
-    public void checkUnusualActivity(String username) {
+    public static void checkUnusualActivity(String username) {
         List<Double> userTransactions = transactionHistory.get(username);
         if (userTransactions != null) {
             // Check for unusual activity based on the user's transaction history

@@ -17,6 +17,11 @@ public class DepositTransaction implements Transaction{
     }
 
     @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
     public void execute() throws IOException {
         // Logic to deposit money into the account
         FileManager fileManager = FileManager.getInstance();

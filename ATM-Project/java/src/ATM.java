@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 import Transactions.*;
 import FileManager.*;
+import Transactions.AdvancedFeatures.*;
+import Transactions.AdvancedFeatures.SecurityManager;
 
 
 public class ATM {
@@ -39,7 +41,15 @@ public class ATM {
             System.out.println("2. Withdraw");
             System.out.println("3. Transfer");
             System.out.println("4. Change PIN");
-            System.out.println("5. Exit");
+            System.out.println("5. Display Transaction History");
+            System.out.println("6. Display Scheduled Transactions");
+            System.out.println("7. Display Account Alerts");
+            System.out.println("8. Display Multi-Currency Support");
+            System.out.println("9. User Profile Management");
+            System.out.println("10. Display Security Enhancements");
+            System.out.println("11. EXIT");
+
+
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
 
@@ -79,12 +89,41 @@ public class ATM {
                     System.out.print("Enter new PIN: ");
                     String newPin = scanner.next();
                     // Create change PIN transaction
-                    Transaction changePinTransaction = new ChangePinTransaction(username, newPin);
+                    Transaction changePinTransaction = new ChangePinTransaction(username, newPin) {
+                        @Override
+                        public String getUsername() {
+                            return null;
+                        }
+                    };
                     // Execute change PIN transaction
                     changePinTransaction.execute();
                     break;
                 case 5:
-                    // Exit
+                    // Display Transaction History
+                    displayTransactionHistory();
+                    break;
+                case 6:
+                    // Display Scheduled Transactions
+                    displayScheduledTransactions();
+                    break;
+                case 7:
+                    // Display Account Alerts
+                    displayAccountAlerts();
+                    break;
+                case 8:
+                    // Display Multi-Currency Support
+                    displayMultiCurrencySupport();
+                    break;
+                case 9:
+                    // Display User Profile Management
+                    displayUserProfileManagement();
+                    break;
+                case 10:
+                    // Display Security Enhancements
+                    displaySecurityEnhancements();
+                    break;
+                case 11:
+                    // Exit the program
                     System.out.println("Exiting...");
                     break;
                 default:
@@ -128,6 +167,77 @@ public class ATM {
                 break;
             }
         }
+    }
+
+    //OTHER METHODS
+
+    // Method to display Transaction History
+    private static void displayTransactionHistory() {
+        // Retrieve and display transaction history
+        List<Transaction> transactionHistory = TransactionHistoryManager.getTransactionHistory();
+        if (transactionHistory.isEmpty()) {
+            System.out.println("Transaction history is empty.");
+        } else {
+            System.out.println("Transaction History:");
+            for (Transaction transaction : transactionHistory) {
+                System.out.println(transaction.toString());
+            }
+        }
+    }
+
+    // Method to display Scheduled Transactions
+    private static void displayScheduledTransactions() {
+        // Retrieve and display scheduled transactions
+        List<ScheduledTransaction> scheduledTransactions = ScheduledTransactionManager.getScheduledTransactions();
+        if (scheduledTransactions.isEmpty()) {
+            System.out.println("No scheduled transactions.");
+        } else {
+            System.out.println("Scheduled Transactions:");
+            for (ScheduledTransaction transaction : scheduledTransactions) {
+                System.out.println(transaction.toString());
+            }
+        }
+    }
+
+    // Method to display Account Alerts
+    private static void displayAccountAlerts() {
+        // Check for unusual activity and send alerts if necessary
+        String username = "exampleUser"; // Provide the username here
+        AccountAlertManager.checkUnusualActivity(username);
+    }
+
+    // Method to display Multi-Currency Support
+    private static void displayMultiCurrencySupport() {
+        // Convert currency and display the result
+        CurrencyConverter currencyConverter = new CurrencyConverter();
+        double convertedAmount = currencyConverter.convertCurrency(100.0, "USD", "EUR");
+        System.out.println("Converted amount: " + convertedAmount);
+    }
+
+    // Method to display User Profile Management
+    private static void displayUserProfileManagement() {
+        // Retrieve and display user profile
+        String name = "exampleUser"; // Provide the username here
+        UserProfile userProfile = UserProfileManager.getUserProfile(name);
+        if (userProfile != null) {
+            System.out.println("User Profile:");
+            System.out.println("Username: " + userProfile.getName());
+            System.out.println("Email: " + userProfile.getEmail());
+            System.out.println("Date of Birth: " + userProfile.getDateOfBirth());
+            // Display other profile attributes as needed
+        } else {
+            System.out.println("User profile not found.");
+        }
+    }
+
+    // Method to display Security Enhancements
+    private static void displaySecurityEnhancements() {
+        // Perform security enhancements
+        SecurityManager securityManager = new SecurityManager();
+        String encryptedData = securityManager.encryptData("Sensitive information");
+        System.out.println("Encrypted Data: " + encryptedData);
+        String decryptedData = securityManager.decryptData(encryptedData);
+        System.out.println("Decrypted Data: " + decryptedData);
     }
 
 }

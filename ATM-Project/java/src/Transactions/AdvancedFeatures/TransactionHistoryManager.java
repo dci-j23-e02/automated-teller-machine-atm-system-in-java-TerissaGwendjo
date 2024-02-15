@@ -8,17 +8,21 @@ import java.util.List;
 
 public class TransactionHistoryManager {
 
-    private List<TransactionFactory> transactionHistory;
+    private static List<TransactionFactory> transactionHistory;
 
     public TransactionHistoryManager() {
         this.transactionHistory = new ArrayList<>();
+    }
+
+    public static List<Transaction> getTransactionHistory() {
+        return null;
     }
 
     public void addTransaction(TransactionFactory transaction) {
         transactionHistory.add(transaction);
     }
 
-    public List<TransactionFactory> getTransactionHistory(String username) {
+    public static List<TransactionFactory> getTransactionHistory(String username) {
         List<TransactionFactory> userTransactions = new ArrayList<>();
         for (TransactionFactory transaction : transactionHistory) {
             if (transaction.getUsername().equals(username)) {

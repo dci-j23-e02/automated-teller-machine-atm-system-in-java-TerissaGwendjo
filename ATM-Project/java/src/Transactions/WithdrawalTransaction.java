@@ -16,6 +16,11 @@ public class WithdrawalTransaction implements Transaction {
     }
 
     @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
     public void execute() throws IOException {
         // Logic to withdraw money from the account
         FileManager fileManager = FileManager.getInstance();

@@ -17,10 +17,20 @@ public abstract class TransactionFactory {
     }
 
     public static Transaction createTransferTransaction(String TransactionType, String senderUsername, String receiverUsername, double amount) {
-        return new TransferTransaction(amount, senderUsername, receiverUsername);
+        return new TransferTransaction(amount, senderUsername, receiverUsername) {
+            @Override
+            public String getUsername() {
+                return null;
+            }
+        };
     }
     public static Transaction createChangePinTransaction(String TransactionType, String username, String newPin) {
-        return new ChangePinTransaction(username, newPin);
+        return new ChangePinTransaction(username, newPin) {
+            @Override
+            public String getUsername() {
+                return null;
+            }
+        };
     }
 
 

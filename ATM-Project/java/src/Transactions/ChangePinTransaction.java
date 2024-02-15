@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import FileManager.*;
 
-public class ChangePinTransaction implements Transaction{
+public abstract class ChangePinTransaction implements Transaction{
 
     private String username;
     private String newPin;

@@ -5,7 +5,7 @@ import FileManager.*;
 import java.io.IOException;
 import java.util.List;
 
-public class TransferTransaction implements Transaction {
+public abstract class TransferTransaction implements Transaction {
     private double amount;
     private String senderUsername;
     private String receiverUsername;

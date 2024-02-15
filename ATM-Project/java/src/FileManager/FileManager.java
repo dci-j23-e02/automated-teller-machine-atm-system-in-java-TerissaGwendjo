@@ -12,8 +12,8 @@ public class FileManager {
     private static File userRecordsFile;
 
     private FileManager() {
-        // Initialize the file object to represent the UserData.txt file
-        userRecordsFile = new File("ATM-Project/java/src/User/UserData");
+        // Initialize the file object to represent the UserData.txt.txt file
+        userRecordsFile = new File("ATM-Project/java/src/User/UserData.txt");
 
         // Check if the file doesn't exist
         if (!userRecordsFile.exists()) {

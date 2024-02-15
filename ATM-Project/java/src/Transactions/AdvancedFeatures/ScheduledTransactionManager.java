@@ -14,6 +14,10 @@ public class ScheduledTransactionManager {
         this.scheduledTransactions = new ArrayList<>();
     }
 
+    public static List<ScheduledTransaction> getScheduledTransactions() {
+        return null;
+    }
+
     public void scheduleTransaction(TransactionFactory transaction, Date scheduledTime) {
         ScheduledTransaction scheduledTransaction = new ScheduledTransaction(transaction, scheduledTime);
         scheduledTransactions.add(scheduledTransaction);
