@@ -2,6 +2,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,14 +37,14 @@ class ATMTest {
         System.setErr(originalErr);
     }
 
-   /* @Test
+    @Test
     public void testAuthenticateUser() {
         List<String> userRecords = new ArrayList<>();
-        userRecords.add("user1,password1,100.0");
+        userRecords.add("robin_hag,ro123,10000.0");
 
-        assertTrue(ATM.authenticateUser("user1", userRecords));
-        assertFalse(ATM.authenticateUser("user1", new ArrayList<>()));
-        assertFalse(ATM.authenticateUser("user2", userRecords));
+        assertTrue(ATM.authenticateUser("terissa_gwe", userRecords));
+        assertFalse(ATM.authenticateUser("michelle_jan", new ArrayList<>()));
+        assertFalse(ATM.authenticateUser("lioannis_gu", userRecords));
     }
 
     @Test
@@ -62,6 +66,38 @@ class ATMTest {
         ATM.displayTransactionHistory();
         assertEquals(expectedEmptyOutput, outContent.toString());
 
-    }*/
+    }
+
+    @Test
+    public void testDisplayScheduledTransactions() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Call the method to be tested
+        ATM.displayScheduledTransactions();
+
+        // Assert the output
+        assertEquals("No scheduled transactions.\n", outContent.toString());
+
+        // Clean up
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testDisplayAccountAlerts() {
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Call the method to be tested
+        ATM.displayAccountAlerts();
+
+        // Assert the output
+        String expectedOutput = "Account Alert: Unusual activity detected!";
+        assertEquals("Expected output", expectedOutput, outContent.toString().trim());
+
+        // Clean up
+        System.setOut(System.out);
+    }
 
 }

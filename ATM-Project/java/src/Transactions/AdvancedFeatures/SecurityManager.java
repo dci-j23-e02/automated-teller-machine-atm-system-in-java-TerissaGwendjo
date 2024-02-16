@@ -38,8 +38,8 @@ public class SecurityManager {
             // Encode the encrypted bytes to Base64 string
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Return null on error
+            System.err.println("WARNING: ERROR WITH AES KEY");
+            return "Encrypted Data: null";
         }
     }
 
@@ -59,8 +59,8 @@ public class SecurityManager {
             // Convert the decrypted bytes to string
             return new String(decryptedBytes);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Return null on error
+            System.err.println("WARNING: ERROR WITH AES KEY");
+            return "Decrypted Data: null";
         }
     }
 

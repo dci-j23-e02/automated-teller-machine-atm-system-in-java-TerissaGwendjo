@@ -31,8 +31,14 @@ public class AccountAlertManager {
 
     // Check unusual activity
     public static void checkUnusualActivity(String username) {
+
+        if (transactionHistory == null) {
+            System.out.println("Transaction history is not initialized.");
+            return;
+        }
+
         List<Double> userTransactions = transactionHistory.get(username);
-        if (userTransactions != null) {
+        if (userTransactions != null && !userTransactions.isEmpty()) {
             // Check for unusual activity based on the user's transaction history
             double totalAmount = 0.0;
             for (Double amount : userTransactions) {
@@ -50,7 +56,11 @@ public class AccountAlertManager {
                     return;
                 }
             }
+            // No unusual activity detected
+            System.out.println("No unusual activity detected for user " + username);
+        } else {
+            // No account found or empty transaction history
+            System.out.println("No account found or empty transaction history for user: " + username);
         }
     }
-
 }

@@ -124,7 +124,7 @@ public class ATM {
                     break;
                 case 11:
                     // Exit the program
-                    System.out.println("Exiting...");
+                    System.out.println("Exiting... \nTHANKS FOR VISITING OUR ATM MACHINE!");
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -136,7 +136,7 @@ public class ATM {
         }
     }
 
-    private static boolean authenticateUser(String username, List<String> userRecords) {
+    public static boolean authenticateUser(String username, List<String> userRecords) {
         // Prompt user to enter password
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
@@ -154,7 +154,7 @@ public class ATM {
         return false; // Authentication failed
     }
 
-    private static void displayBalance(String username, List<String> userRecords) {
+    public static void displayBalance(String username, List<String> userRecords) {
         // Iterate through user records to find user balance
         for (String record : userRecords) {
             // Split the record into its components using comma as the delimiter
@@ -172,12 +172,12 @@ public class ATM {
     //OTHER METHODS
 
     // Method to display Transaction History
-    private static void displayTransactionHistory() {
+    public static void displayTransactionHistory() {
         // Retrieve and display transaction history
         List<Transaction> transactionHistory = TransactionHistoryManager.getTransactionHistory();
 
         if (transactionHistory == null) {
-            System.out.println("Error: Transaction history is null."); }
+            System.out.println("Error: Transaction history is null"); }
          else if (transactionHistory.isEmpty()) {
             System.out.println("Transaction history is empty.");
         } else {
@@ -189,10 +189,12 @@ public class ATM {
     }
 
     // Method to display Scheduled Transactions
-    private static void displayScheduledTransactions() {
+    static void displayScheduledTransactions() {
         // Retrieve and display scheduled transactions
         List<ScheduledTransaction> scheduledTransactions = ScheduledTransactionManager.getScheduledTransactions();
-        if (scheduledTransactions.isEmpty()) {
+        if (scheduledTransactions == null) {
+            System.out.println("Error: Scheduled Transaction not available!");
+        } else if (scheduledTransactions.isEmpty()) {
             System.out.println("No scheduled transactions.");
         } else {
             System.out.println("Scheduled Transactions:");
@@ -203,9 +205,9 @@ public class ATM {
     }
 
     // Method to display Account Alerts
-    private static void displayAccountAlerts() {
+    static void displayAccountAlerts() {
         // Check for unusual activity and send alerts if necessary
-        String username = "exampleUser"; // Provide the username here
+        String username = "exampleUser";
         AccountAlertManager.checkUnusualActivity(username);
     }
 
@@ -233,7 +235,7 @@ public class ATM {
     // Method to display User Profile Management
     private static void displayUserProfileManagement() {
         // Retrieve and display user profile
-        String name = "exampleUser"; // Provide the username here
+        String name = "";
         UserProfile userProfile = UserProfileManager.getUserProfile(name);
         if (userProfile != null) {
             System.out.println("User Profile:");
