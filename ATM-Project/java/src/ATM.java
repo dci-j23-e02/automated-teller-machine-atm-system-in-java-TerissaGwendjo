@@ -212,7 +212,6 @@ public class ATM {
     }
 
     // Method to display Multi-Currency Support
-
     private static void displayMultiCurrencySupport() {
         // Read account balance from file or any other data source
         double accountBalance = readAccountBalanceFromFile(); // Implement this method to read the balance from the file
@@ -222,8 +221,6 @@ public class ATM {
         double convertedAmount = currencyConverter.convertCurrency(accountBalance, "USD", "EUR");
         System.out.println("Converted amount: " + convertedAmount);
     }
-
-
 
     /*private static void displayMultiCurrencySupport() {
         // Convert currency and display the result
@@ -242,7 +239,7 @@ public class ATM {
             System.out.println("Username: " + userProfile.getName());
             System.out.println("Email: " + userProfile.getEmail());
             System.out.println("Date of Birth: " + userProfile.getDateOfBirth());
-            // Display other profile attributes as needed
+
         } else {
             System.out.println("User profile not found.");
         }
